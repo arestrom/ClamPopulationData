@@ -441,7 +441,7 @@ srv_event = srv_event |>
   mutate(comment_text = NA_character_) |> 
   mutate(created_datetime = with_tz(Sys.time(), "UTC")) |> 
   #mutate(created_by = Sys.getenv("USERNAME")) |> 
-  mutate(created_by = "stromas") |>                                                # Don't use in future !
+  mutate(created_by = "stromas") |>     # Don't use in future !
   mutate(modified_datetime = with_tz(as.POSIXct(NA), "UTC")) |> 
   mutate(modified_by = NA_character_) |> 
   st_drop_geometry() |> 
@@ -597,6 +597,7 @@ all(unique(wet_dat$sample_number) %in% unique(spec_enc$sample_number))
 unique(wet_dat$year_part)
 unique(wet_dat$BIDN)
 unique(wet_dat$species)
+unique(wet_dat$flag)
   
 # Generate wet_lab data for the species_encounter table. 
 # Includes data for individual_species table
@@ -605,11 +606,45 @@ lab_clams = wet_dat |>
   select(survey_event_id, species, sample_number, species_count = count,
          wet_count, length, weight, flag)
 
+# Add species_id
+lab_clams = lab_clams |> 
+  mutate(species_id = case_when(
+    species == "Manila" ~ "a19761a6-f1f8-486f-af1f-94e129fbfb62",
+    species == "Native" ~ "906931e9-b480-44c9-b798-139bbaee4630",
+    species == "ESS" ~ "4fb72cc7-a4c3-4cf4-acde-32bea9f15a43",
+    species == "Macoma" ~ "6c1f01c2-da46-471d-b830-35cc6c373b1a",
+    species == "Butter" ~ "5c92ce13-de44-44f7-b51d-c1e50fa9ec99",
+    species == "Cockle" ~ "c4f1b299-b46a-46db-b9b4-1074744b0a07",
+    species == "Horse" ~ "383ca6a6-aeb9-4b67-af31-4007f3ce0dc1",
+    species == "Varnish" ~ "821c6569-8631-494a-926a-560a81075b14",
+    species == "Empty" ~ NA_character_,
+    species == "Flooded" ~ NA_character_,
+    is.na(species) ~ NA_character_)) |> 
+  mutate(catch_result_type_id = case_when(
+    !is.na(species_id) ~ "31d9f2fe-7afe-495f-938c-59a33bd22d9e",      # Sample retained for wet-lab
+    species == "Empty" ~ "95570f30-8bbb-4bd9-8b62-7f44f67b3baf",      # Sample hole was empty
+    species == "Flooded" ~ "91d362a6-ac83-4aac-8ff2-b2038a0184dc",    # Sample hole was flooded
+    is.na(species_id) ~ "8891f1e8-f01b-401a-952b-76c9d589a83c"))      # Not applicable
+  
+ # Add shell_condition_id
+
+  
+
 # Check the flag codes
 unique(lab_clams$flag)
 
 # LO = length only; OK = Both length and weight; WO = Weight only; 
 # BL = Broken Legal; BS = Broken Sub-legal; MT = Empty; FL = Flooded;
+
+
+
+
+
+
+
+
+
+
 
 
 
