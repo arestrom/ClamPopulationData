@@ -1,0 +1,10 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+*.xlsx
+*.pdf
+*.gpx
+*.gdb
+*.mdb
+*.accdb
