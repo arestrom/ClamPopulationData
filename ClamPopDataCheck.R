@@ -10,7 +10,8 @@
 #  Notes: 
 #  1. The gdb files in 2022 GPS and Field Notes do not download using sf in R
 #     But the gpx files open correctly. The gdb files do open in QGIS and match
-#     the gpx files exactly for WPennCove 2022. 
+#     the gpx files exactly for WPennCove 2022. They can be exported from QGIS into
+#     any needed format if necessary, such as if .gpx files are corrupt or do not exist.
 #  2. Doug confirmed any and all edits to pop data will be in the BeachEdits folder
 #     (ie, 2022.240150.00Bch.xlsx) for location and basic transect data. So use the 
 #     BeachEdits data as baseline. Compare beach edits to gpx and gdb files.
